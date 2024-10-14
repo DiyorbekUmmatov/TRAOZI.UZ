@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boshqaruv Interfeysi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6">Boshqaruv Interfeysi</h1>
+
+        <button id="addUserBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">
+            Yangi foydalanuvchi yaratish
+        </button>
+
+        <div id="addUserModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                <h3 class="text-lg font-bold mb-4">Yangi foydalanuvchi qo'shish</h3>
+                <form id="addUserForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="companyName">
+                            Korxona nomi
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="companyName" type="text" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="address">
+                            Manzili
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="address" type="text" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="version">
+                            Versiya
+                        </label>
+                        <select
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="version" required>
+                            <option value="Basic">Basic</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Premium">Premium</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="login">
+                            Login
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="login" type="text" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="login">
+                            Telegram Id
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="login" type="text" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                            Parol
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="password" type="password" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="contract">
+                            Shartnoma nusxasi
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="contract" type="file" accept=".pdf,.doc,.docx" required>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            type="submit">
+                            Qo'shish
+                        </button>
+                        <button id="closeAddUserModal"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            type="button">
+                            Bekor qilish
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="changeLoginPasswordModal"
+            class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                <h3 class="text-lg font-bold mb-4">Login va Parolni o'zgartirish</h3>
+                <form id="changeLoginPasswordForm">
+                    <input type="hidden" id="changeUserId">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="newLogin">
+                            Yangi Login
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="newLogin" type="text" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="newPassword">
+                            Yangi Parol
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="newPassword" type="password" required>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            type="submit">
+                            O'zgartirish
+                        </button>
+                        <button id="closeChangeLoginPasswordModal"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            type="button">
+                            Bekor qilish
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b border-r">№</th>
+                    <th class="py-2 px-4 border-b border-r">Korxona nomi</th>
+                    <th class="py-2 px-4 border-b border-r">Sana va vaqt</th>
+                    <th class="py-2 px-4 border-b border-r">Manzili</th>
+                    <th class="py-2 px-4 border-b border-r">Versiyasi</th>
+                    <!-- <th class="py-2 px-4 border-b border-r">Telegram Id</th> -->
+                    <th class="py-2 px-4 border-b border-r">Login/Parol o'zgartirish</th>
+                    <th class="py-2 px-4 border-b">Yoqish/O'chirish</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <!-- Table rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let users = [];
+        let userCount = 0;
+
+        document.getElementById('addUserBtn').addEventListener('click', () => {
+            document.getElementById('addUserModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closeAddUserModal').addEventListener('click', () => {
+            document.getElementById('addUserModal').classList.add('hidden');
+        });
+
+        document.getElementById('closeChangeLoginPasswordModal').addEventListener('click', () => {
+            document.getElementById('changeLoginPasswordModal').classList.add('hidden');
+        });
+
+        document.getElementById('addUserForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const companyName = document.getElementById('companyName').value;
+            const address = document.getElementById('address').value;
+            const version = document.getElementById('version').value;
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+            const contract = document.getElementById('contract').files[0];
+
+            userCount++;
+            const newUser = {
+                id: userCount,
+                companyName,
+                dateTime: new Date().toLocaleString('uz-UZ'),
+                address,
+                version,
+                login,
+                password,
+                contract: contract ? contract.name : 'Fayl tanlanmagan',
+                isActive: true
+            };
+
+            users.push(newUser);
+            addUserToTable(newUser);
+            document.getElementById('addUserModal').classList.add('hidden');
+            document.getElementById('addUserForm').reset();
+        });
+
+        document.getElementById('changeLoginPasswordForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userId = document.getElementById('changeUserId').value;
+            const newLogin = document.getElementById('newLogin').value;
+            const newPassword = document.getElementById('newPassword').value;
+
+            const user = users.find(u => u.id === parseInt(userId));
+            if (user) {
+                user.login = newLogin;
+                user.password = newPassword;
+                alert('Login va parol muvaffaqiyatli o\'zgartirildi');
+                updateTable();
+                document.getElementById('changeLoginPasswordModal').classList.add('hidden');
+            }
+        });
+
+        function addUserToTable(user) {
+            const tbody = document.getElementById('userTableBody');
+            const row = tbody.insertRow();
+            row.innerHTML = `
+                <td class="py-2 px-4 border-b border-r">${user.id}</td>
+                <td class="py-2 px-4 border-b border-r">${user.companyName}</td>
+                <td class="py-2 px-4 border-b border-r">${user.dateTime}</td>
+
+                <td class="py-2 px-4 border-b border-r">${user.address}</td>
+                <td class="py-2 px-4 border-b border-r">${user.version}</td>
+
+                <!-- <td class="py-2 px-4 border-b border-r">${user.telegramId}</td> -->
+                <td class="py-2 px-4 border-b border-r">
+                    <button onclick="openChangeLoginPasswordModal(${user.id})" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">
+                        O'zgartirish
+                    </button>
+                </td>
+                <td class="py-2 px-4 border-b">
+                    <button onclick="toggleUserStatus(${user.id})" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">
+                        ${user.isActive ? 'O\'chirish' : 'Yoqish'}
+                    </button>
+                </td>
+            `;
+            row.addEventListener('click', () => toggleUserDetails(user.id));
+        }
+
+        function toggleUserDetails(userId) {
+            const existingDetails = document.getElementById(`userDetails-${userId}`);
+            if (existingDetails) {
+                existingDetails.remove();
+            } else {
+                const user = users.find(u => u.id === userId);
+                if (user) {
+                    const detailsRow = document.createElement('tr');
+                    detailsRow.id = `userDetails-${userId}`;
+                    detailsRow.innerHTML = `
+                        <td colspan="7" class="py-4 px-4 border-b">
+                            <h3 class="font-bold mb-2">To'liq ma'lumotlar:</h3>
+                            <p><strong>Korxona nomi:</strong> ${user.companyName}</p>
+                            <p><strong>Manzili:</strong> ${user.address}</p>
+                            <p><strong>Versiyasi:</strong> ${user.version}</p>
+                            <p><strong>Telegram Id:</strong> ${user.telegramId}</p>
+                            <p><strong>Login:</strong> ${user.login}</p>
+                            <p><strong>Parol:</strong> ********</p>
+                            <p><strong>Shartnoma raqami:</strong> ${user.contract}</p>
+                            <p><strong>Shartnoma fayli:</strong> ${user.contract}</p>
+                            <button onclick="downloadContract('${user.contract}')" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+                                Shartnomani yuklab olish
+                            </button>
+                        </td>
+                    `;
+                    const userRow = document.querySelector(`#userTableBody tr:nth-child(${userId})`);
+                    userRow.parentNode.insertBefore(detailsRow, userRow.nextSibling);
+                }
+            }
+        }
+
+        function openChangeLoginPasswordModal(userId) {
+            const user = users.find(u => u.id === userId);
+            if (user) {
+                document.getElementById('changeUserId').value = userId;
+                document.getElementById('newLogin').value = user.login;
+                document.getElementById('newPassword').value = '';
+                document.getElementById('changeLoginPasswordModal').classList.remove('hidden');
+            }
+        }
+
+        function toggleUserStatus(userId) {
+            const user = users.find(u => u.id === userId);
+            if (user) {
+                user.isActive = !user.isActive;
+                updateTable();
+            }
+        }
+
+        function updateTable() {
+            const tbody = document.getElementById('userTableBody');
+            tbody.innerHTML = '';
+            users.forEach(user => addUserToTable(user));
+        }
+
+        function downloadContract(fileName) {
+            // Bu yerda haqiqiy fayl yuklab olish logikasi bo'lishi kerak
+            alert(`${fileName} faylini yuklab olish boshlandi`);
+        }
+    </script>
+</body>
+
+</html>

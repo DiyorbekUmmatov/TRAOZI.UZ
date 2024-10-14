@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uz Taroz - Weight Management System</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .card .price {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #4a4a4a;
+        }
+
+        .card .price span {
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        .card ul {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .card ul li {
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .card ul li::before {
+            content: "✓";
+            color: #4CAF50;
+            margin-right: 10px;
+        }
+
+        .card .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .card .btn:hover {
+            background-color: #45a049;
+        }
+
+        .card.standard {
+            background-color: #e8f5e9;
+        }
+
+        .card.premium {
+            background-color: #fce4ec;
+        }
+
+        .card.premium .btn {
+            background-color: #e91e63;
+        }
+
+        .card.premium .btn:hover {
+            background-color: #d81b60;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .login-container .btn {
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-container .btn:hover {
+            background-color: #005f73;
+        }
+
+        .return-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .return-btn:hover {
+            background-color: #e60000;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section {
+            flex: 1;
+            background-color: white;
+            margin: 0.5rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            transition: flex 0.3s ease-in-out;
+        }
+
+        .video-feed {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: black;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+        }
+
+        .enlarged-video {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .enlarged-video-content {
+            width: 80%;
+            height: 80%;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+
+        .close-enlarged-video {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e6ffe6;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffcc;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+            cursor: pointer;
+        }
+
+        tr.selected {
+            background-color: #b3d9ff;
+        }
+
+        .details,
+        .videos {
+            display: none;
+        }
+
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .expanded {
+            flex: 3;
+        }
+
+        .photo-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .photo {
+            width: 48%;
+            aspect-ratio: 1 / 1;
+            background-color: #f2f2f2;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+        }
+
+        #app {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #auth-container,
+        #content-container,
+        #add-category-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        #auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab {
+            padding: 10px 20px;
+            background-color: #f2f2f2;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .auth-tab.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        select {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button[type="submit"],
+        .btn {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover,
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .our-company {
+            background-color: #e6f7ff;
+        }
+
+        .other-company {
+            background-color: #fff0e6;
+        }
+
+        .our-company .vehicle-number {
+            color: #0066cc;
+        }
+
+        .other-company .vehicle-number {
+            color: #ff6600;
+        }
+
+        #toggle-btn,
+        #add-category-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        #toggle-btn:hover,
+        #add-category-btn:hover {
+            background-color: #45a049;
+        }
+
+        #logout-btn {
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        #category-filter,
+        #company-search {
+            margin-bottom: 20px;
+        }
+
+        #company-search input {
+            width: 200px;
+        }
+
+        .image-placeholder {
+            width: 50px;
+            height: 50px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+        }
+
+        .delete-btn {
+            padding: 5px 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .weight-container {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .weight-display {
+            display: flex;
+            align-items: baseline;
+        }
+
+        .weight-value {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .weight-unit {
+            font-size: 24px;
+            margin-left: 10px;
+        }
+
+        .weight-indicator-wrapper {
+            background-color: #e0e0e0;
+            height: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .weight-indicator {
+            background-color: #4a90e2;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .camera-container {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .camera-view {
+            background-color: #ddd;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
+
+        .camera-view span {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .modal-content button {
+            margin: 0.5rem;
+        }
+
+        .enlarged-image {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .enlarged-image-content {
+            max-width: 90%;
+            max-height: 90%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .enlarged-image-content img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .close-enlarged-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .report-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+
+
+        .report-buttons button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .report-buttons button:hover {
+            background-color: #45a049;
+        }
+
+        .report-buttons button.active {
+            background-color: #45a049;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .report-table th,
+        .report-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .report-table th {
+            background-color: #f2f2f2;
+        }
+
+        #search-container {
+            margin-bottom: 20px;
+        }
+
+        #search-container input {
+            padding: 10px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        #search-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+
+        .language-selector select {
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .qoldiq-positive {
+            color: green;
+        }
+
+        .qoldiq-negative {
+            color: red;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #45a049;
+        }
+
+        .report-content {
+            display: none;
+        }
+
+        .report-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="backBtn" class="back-btn">Orqaga</button>
+    <div class="language-selector">
+        <select id="language-select">
+            <option value="uz">O'zbekcha</option>
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+        </select>
+    </div>
+
+    <script>
+        // Existing JavaScript code
+
+        // Add this new code for language translation
+        const translations = {
+            uz: {
+                back: "Orqaga",
+                login: "Kirish",
+                username: "Foydalanuvchi nomi",
+                password: "Parol",
+                welcome: "Xush kelibsiz,",
+                logout: "Chiqish",
+                addCategory: "Yangi kategoriya qo'shish",
+                search: "Qidirish",
+                // Add more translations for Uzbek
+            },
+            ru: {
+                back: "Назад",
+                login: "Вход",
+                username: "Имя пользователя",
+                password: "Пароль",
+                welcome: "Добро пожаловать,",
+                logout: "Выйти",
+                addCategory: "Добавить новую категорию",
+                search: "Поиск",
+                // Add more translations for Russian
+            },
+            en: {
+                back: "Back",
+                login: "Login",
+                username: "Username",
+                password: "Password",
+                welcome: "Welcome,",
+                logout: "Logout",
+                addCategory: "Add new category",
+                search: "Search",
+                // Add more translations for English
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.getElementById('backBtn').textContent = translations[lang].back;
+            document.getElementById('loginUsername').placeholder = translations[lang].username;
+            document.getElementById('loginPassword').placeholder = translations[lang].password;
+            document.querySelector('#loginForm button').textContent = translations[lang].login;
+            document.querySelector('h1').innerHTML = `${translations[lang].welcome} <span id="user-name"></span>!`;
+            document.getElementById('logout-btn').textContent = translations[lang].logout;
+            document.getElementById('add-category-btn').textContent = translations[lang].addCategory;
+            document.getElementById('search-button').textContent = translations[lang].search;
+            // Update more elements as needed
+        }
+
+        document.getElementById('language-select').addEventListener('change', function () {
+            changeLanguage(this.value);
+        });
+
+        // Call changeLanguage with the default language when the page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            changeLanguage('uz');
+        });
+
+        // Existing JavaScript code continues...
+    </script>
+
+
+    <div id="loginSection" class="login-container">
+        <form id="loginForm">
+            <input type="text" id="loginUsername" placeholder="Username" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit" class="btn">Login</button>
+            <div
+                style="width: 150px;height: 25px;display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, #f44336, #9c27b0);">
+                <a style="text-decoration: none; color: black;" href="../BI/fi.html">Boshqaruvchi</a>
+            </div>
+        </form>
+    </div>
+
+    <div id="pricingPlans" class="container hidden">
+        <div class="card">
+            <h2>Basic</h2>
+            <div class="price">$9.99<span>/month</span></div>
+            <ul>
+                <li>10GB Storage</li>
+                <li>1 User</li>
+                <li>Basic Support</li>
+                <li>Email Notifications</li>
+            </ul>
+            <a href="../basic/basic.html" class="btn choose-pla" data-plan="basic">Choose Plan</a>
+        </div>
+
+        <div class="card standard">
+            <h2>Standard</h2>
+            <div class="price">$19.99<span>/month</span></div>
+            <ul>
+                <li>50GB Storage</li>
+                <li>5 Users</li>
+                <li>Priority Support</li>
+                <li>Email and SMS Notifications</li>
+                <li>Advanced Analytics</li>
+            </ul>
+            <a href="../standart/standart.html" class="btn choose-plan" data-plan="standard">Choose Plan</a>
+        </div>
+
+        <div class="card premium">
+            <h2>Premium</h2>
+            <div class="price">$39.99<span>/month</span></div>
+            <ul>
+                <li>100GB Storage</li>
+                <li>Unlimited Users</li>
+                <li>24/7 Dedicated Support</li>
+                <li>All Notifications</li>
+                <li>Advanced Analytics</li>
+                <li>Custom Integrations</li>
+                <li>Priority Updates</li>
+            </ul>
+            <a href="../index.html" class="btn choose-plan" data-plan="premium">Choose Plan</a>
+        </div>
+    </div>
+
+    <div id="app" class="hidden">
+        <div id="content-container">
+            <header>
+                <h1>Welcome, <span id="user-name"></span>!</h1>
+                <button id="logout-btn">Logout</button>
+            </header>
+            <nav>
+                <button id="add-category-btn">Yangi kategoriya qo'shish</button>
+            </nav>
+            <div id="add-category-form" style="display: none;">
+                <h2>Yangi kategoriya qo'shish</h2>
+                <form id="new-category-form">
+                    <input type="text" id="company-name" placeholder="Korxona nomi" required>
+                    <input type="text" id="vehicle-model" placeholder="Avtomobil rusumi" required>
+                    <input type="text" id="vehicle-number" placeholder="Avtomobil raqami" required>
+                    <select id="company-category" required>
+                        <option value="">Tanlang</option>
+                        <option value="Bizniki">Bizniki</option>
+                        <option value="Boshqaniki">Boshqaniki</option>
+                    </select>
+                    <button type="submit">Qo'shish</button>
+                </form>
+            </div>
+            <main>
+                <div class="container">
+                    <div class="weight-container">
+                        <h2>Текущий вес</h2>
+                        <div class="weight-display">
+                            <p class="weight-value" id="weight-value">0</p>
+                            <p class="weight-unit">кг</p>
+                        </div>
+                        <div class="weight-indicator-wrapper">
+                            <div class="weight-indicator" id="weight-indicator"></div>
+                        </div>
+                    </div>
+
+                    <script>
+                        // Har 1 soniyada serverga so'rov yuborish
+                        setInterval(() => {
+                            fetch('http://localhost:3000/data')
+                                .then(response => response.json())
+                                .then(data => {
+                                    document.getElementById('weight-value').textContent = data.weight; // Olingan ma'lumotni ko'rsatish
+                                })
+                                .catch(error => console.error('Xatolik:', error));
+                        }, 1000); // Har 1 soniyada yangilanish
+                    </script>
+
+
+
+
+
+
+
+                    <div class="camera-container">
+                        <h2>Камера 1</h2>
+                        <div class="camera-view video-feed" onclick="enlargeVideo(1)">
+                            <span>Изображение с камеры 1</span>
+                        </div>
+                    </div>
+                    <div class="camera-container">
+                        <h2>Камера 2</h2>
+                        <div class="camera-view video-feed" onclick="enlargeVideo(2)">
+                            <span>Изображение с камеры 2</span>
+                        </div>
+                    </div>
+
+                    <div id="tableSection" class="section expanded">
+                        <div id="category-filter">
+                            <label for="company-select">Kategoriya:</label>
+                            <select id="company-select">
+                                <option value="all">Barcha kompaniyalar</option>
+                                <option value="our-company">Bizning kompaniya</option>
+                                <option value="other-companies">Boshqa kompaniyalar</option>
+                            </select>
+                        </div>
+                        <div id="search-container">
+                            <input type="text" id="search-input" placeholder="Korxona nomi yoki avtomobil raqami">
+                            <button id="search-button">Qidirish</button>
+                        </div>
+                        <table id="eventTable">
+                            <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Sana</th>
+                                    <th>Raqam</th>
+                                    <th>1 ogirlik</th>
+                                    <th>2 ogirlik</th>
+                                    <th>Qoldiq</th>
+                                    <th>Holat</th>
+                                    <th>Korxona nomi</th>
+                                    <th>Avtomobil rusumi</th>
+                                    <th>Kategoriya</th>
+                                    <th>Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- Table rows will be inserted here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="detailsSection" class="section hidden">
+                        <div id="eventDetails" class="details">
+                            <span class="close-btn" onclick="toggleSection('details')">&times;</span>
+                            <h2>Детали события</h2>
+                            <p><strong>Номер:</strong> <span id="detailNumber"></span></p>
+                            <p><strong>Дата:</strong> <span id="detailDate"></span></p>
+                            <p><strong>1 ogirlik:</strong> <span id="detailWeight1"></span></p>
+                            <p><strong>2 ogirlik:</strong> <span id="detailWeight2"></span></p>
+                            <p><strong>Qoldiq:</strong> <span id="detailQoldiq"></span></p>
+                            <p><strong>Holat:</strong> <span id="detailHolat"></span></p>
+                            <p><strong>Korxona nomi:</strong> <span id="detailCompany"></span></p>
+                            <p><strong>Avtomobil rusumi:</strong> <span id="detailVehicleModel"></span></p>
+                            <p><strong>Kategoriya:</strong> <span id="detailCategory"></span></p>
+                        </div>
+                        <div class="photo-container">
+                            <div class="photo" onclick="enlargeImage(this)"></div>
+                            <div class="photo" onclick="enlargeImage(this)"></div>
+                        </div>
+                        <div id="videoSection" class="section hidden">
+                            <div id="eventVideos" class="videos">
+                                <span class="close-btn" onclick="toggleSection('video')">&times;</span>
+                                <h2>Видео</h2>
+                                <div class="video-feed" onclick="enlargeVideo(1)">Видео 1</div>
+                                <div class="video-feed" onclick="enlargeVideo(2)">Видео 2</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="report-container">
+                        <div class="report-buttons">
+                            <button id="daily-report-btn" class="active">Kunlik hisobot</button>
+                            <button id="weekly-report-btn">Haftalik hisobot</button>
+                            <button id="monthly-report-btn">Oylik hisobot</button>
+                            <button id="yearly-report-btn">Yillik hisobot</button>
+                        </div> -->
+                        <!-- <div id="report-content" class="report-content active">
+                            <h2 id="report-title">Kunlik hisobot</h2>
+                            <div id="category-filter">
+                                <label for="company-select">Kategoriya:</label>
+                                <select id="company-select">
+                                    <option value="all">Barcha kompaniyalar</option>
+                                    <option value="our-company">Bizning kompaniya</option>
+                                    <option value="other-companies">Boshqa kompaniyalar</option>
+                                </select>
+                            </div>
+                            <div id="search-container">
+                                <input type="text" id="search-input" placeholder="Korxona nomi yoki avtomobil raqami">
+                                <button id="search-button">Qidirish</button>
+                            </div> -->
+                            <!-- <table id="reportTable">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Sana</th>
+                                        <th>Raqam</th>
+                                        <th>1 ogirlik</th>
+                                        <th>2 ogirlik</th>
+                                        <th>Kirim</th>
+                                        <th>Holat</th>
+                                        <th>Korxona nomi</th>
+                                        <th>Avtomobil rusumi</th>
+                                        <th>Kategoriya</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body">
+                                    <!-- Table rows will be inserted here by JavaScript 
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" style="text-align: right;"><strong>Jami Kirim:</strong></td>
+                                        <td id="total-kirim">0</td>
+                                        <td><strong>Jami Chiqim:</strong></td>
+                                        <td id="total-chiqim">0</td>
+                                        <td colspan="4"></td>
+                                    </tr>
+                                </tfoot>
+                            </table> -->
+                            <!-- <button style="background-color: #45a049;width: 100%;height: 40px;"
+                                id="download-pdf-btn">PDF yuklash va Hisobot berish</button>
+                            <script
+                                src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+                            <script>
+                                // Jadvaldagi kirim va chiqim qiymatlarini jamlash va tfoot qismiga chiqarish funksiyasi
+                                function updateTotals() {
+                                    var tableBody = document.getElementById('table-body');
+                                    var kirimTotal = 0;
+                                    var chiqimTotal = 0;
+
+                                    // Har bir qatordagi kirim va chiqim qiymatlarini jamlaymiz
+                                    for (var i = 0; i < tableBody.rows.length; i++) {
+                                        var kirim = parseFloat(tableBody.rows[i].cells[5].querySelector('.input-kirim').value) || 0;
+                                        var chiqim = parseFloat(tableBody.rows[i].cells[6].querySelector('.input-chiqim').value) || 0;
+
+                                        kirimTotal += kirim;
+                                        chiqimTotal += chiqim;
+                                    }
+
+                                    // Tfoot qismidagi jami kirim va chiqimni yangilash
+                                    document.getElementById('total-kirim').textContent = kirimTotal.toFixed(2);
+                                    document.getElementById('total-chiqim').textContent = chiqimTotal.toFixed(2);
+                                }
+
+                                // Dastlab jami kirim va chiqimni hisoblaymiz
+                                updateTotals();
+
+                                // Har bir kirim va chiqim inputlari o'zgarganda hisoblashni yangilash
+                                var kirimInputs = document.querySelectorAll('.input-kirim');
+                                var chiqimInputs = document.querySelectorAll('.input-chiqim');
+
+                                kirimInputs.forEach(input => {
+                                    input.addEventListener('input', updateTotals);
+                                });
+
+                                chiqimInputs.forEach(input => {
+                                    input.addEventListener('input', updateTotals);
+                                });
+
+
+
+                                // Telegram token va chat ID
+                                const TOKEN = '7840818494:AAHhLpsO1fvAbUwt5XIX3fyT1bHfbSHyLPA';
+                                const CHAT_ID = '539896588';
+
+                                // Yuklab olish tugmasiga bosilganda pdf yaratish
+                                document.getElementById('download-pdf-btn').addEventListener('click', function () {
+                                    // PDFga aylantiriladigan jadvalni olamiz
+                                    var table = document.getElementById('reportTable');
+
+                                    // HTML2PDF opsiyalarini belgilash
+                                    var opt = {
+                                        margin: 1,
+                                        filename: 'jadval_report.pdf',
+                                        image: { type: 'jpeg', quality: 0.98 },
+                                        html2canvas: { scale: 2 },
+                                        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                                    };
+
+                                    // Jadvalni PDF formatiga aylantirish
+                                    html2pdf().from(table).set(opt).outputPdf('blob').then(function (pdfBlob) {
+                                        // PDF faylni yuklash
+                                        html2pdf().from(table).set(opt).save();
+
+                                        // PDF faylni Telegram botga yuborish
+                                        sendPDFtoTelegram(pdfBlob);
+                                    });
+                                });
+
+                                // PDF faylni Telegram botga jo'natish funksiyasi
+                                const sendPDFtoTelegram = async (pdfBlob) => {
+                                    const url = `https://api.telegram.org/bot${TOKEN}/sendDocument`;
+                                    const formData = new FormData();
+                                    formData.append('chat_id', CHAT_ID);
+                                    formData.append('document', pdfBlob, 'jadval_report.pdf');
+
+                                    try {
+                                        const response = await fetch(url, {
+                                            method: 'POST',
+                                            body: formData
+                                        });
+
+                                        const result = await response.json();
+                                        if (result.ok) {
+                                            console.log('PDF muvaffaqiyatli yuborildi!');
+                                        } else {
+                                            console.error('Xatolik yuz berdi:', result);
+                                        }
+                                    } catch (error) {
+                                        console.error('Telegramga jo\'natishda xatolik:', error);
+                                    }
+                                };
+                            </script> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for Delete Confirmation -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <p>Siz o'chirishga aminmisiz?</p>
+            <button onclick="confirmDelete(true)">Ha</button>
+            <button onclick="confirmDelete(false)">Yo'q</button>
+        </div>
+    </div>
+
+    <div id="enlargedVideo" class="enlarged-video">
+        <div class="enlarged-video-content">
+            <span class="close-enlarged-video" onclick="closeEnlargedVideo()">&times;</span>
+            <div id="enlargedVideoText"></div>
+        </div>
+    </div>
+
+    <div id="enlargedImage" class="enlarged-image">
+        <div class="enlarged-image-content">
+            <span class="close-enlarged-image" onclick="closeEnlargedImage()">&times;</span>
+            <img id="enlargedImageContent" src="" alt="Enlarged Image">
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('loginForm');
+            const loginSection = document.getElementById('loginSection');
+            const pricingPlans = document.getElementById('pricingPlans');
+            const app = document.getElementById('app');
+            const contentContainer = document.getElementById('content-container');
+            const userName = document.getElementById('user-name');
+            const logoutBtn = document.getElementById('logout-btn');
+            const addCategoryBtn = document.getElementById('add-category-btn');
+            const addCategoryForm = document.getElementById('add-category-form');
+            const newCategoryForm = document.getElementById('new-category-form');
+            const tableBody = document.getElementById('table-body');
+            const companySelect = document.getElementById('company-select');
+            const weightValueElem = document.getElementById('weight-value');
+            const weightIndicatorElem = document.getElementById('weight-indicator');
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            const reportBody = document.getElementById('report-body');
+            const backBtn = document.getElementById('backBtn');
+
+            let companyData = JSON.parse(localStorage.getItem('companyData')) || [];
+            let currentUser = null;
+            let deleteRowId = null;
+
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+
+                if (username === 'admin' && password === 'password') {
+                    currentUser = { name: 'Admin', role: 'admin' };
+                    showPricingPlans();
+                } else {
+                    alert('Invalid username or password');
+                }
+            });
+
+            function showPricingPlans() {
+                loginSection.classList.add('hidden');
+                pricingPlans.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('.choose-plan').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const plan = this.getAttribute('data-plan');
+                    currentUser.plan = plan;
+                    showApp();
+                });
+            });
+
+            function showApp() {
+                pricingPlans.classList.add('hidden');
+                app.classList.remove('hidden');
+                userName.textContent = currentUser.name;
+                renderTable();
+            }
+
+            logoutBtn.addEventListener('click', function () {
+                currentUser = null;
+                app.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+                document.getElementById('loginUsername').value = '';
+                document.getElementById('loginPassword').value = '';
+            });
+
+            addCategoryBtn.addEventListener('click', function () {
+                addCategoryForm.style.display = addCategoryForm.style.display === 'none' ? 'block' : 'none';
+            });
+
+            newCategoryForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const companyName = document.getElementById('company-name').value;
+                const vehicleModel = document.getElementById('vehicle-model').value;
+                const vehicleNumber = document.getElementById('vehicle-number').value;
+                const category = document.getElementById('company-category').value;
+
+                const newCompany = {
+                    id: Date.now(),
+                    companyName,
+                    vehicleModel,
+                    vehicleNumber,
+                    category
+                };
+
+                companyData.push(newCompany);
+                localStorage.setItem('companyData', JSON.stringify(companyData));
+                renderTable();
+                newCategoryForm.reset();
+                addCategoryForm.style.display = 'none';
+            });
+
+            function renderTable(filter = 'all') {
+                tableBody.innerHTML = '';
+                let filteredData = companyData;
+
+                if (filter === 'our-company') {
+                    filteredData = companyData.filter(company => company.category === 'Bizniki');
+                } else if (filter === 'other-companies') {
+                    filteredData = companyData.filter(company => company.category === 'Boshqaniki');
+                }
+
+                filteredData.forEach((company, index) => {
+                    const row = document.createElement('tr');
+                    row.className = company.category === 'Bizniki' ? 'our-company' : 'other-company';
+                    const weight1 = Math.random() * 100;
+                    const weight2 = Math.random() * 100;
+                    const qoldiq = weight1 - weight2;
+                    const holat = qoldiq >= 0 ? 'Kirim' : 'Chiqim';
+
+                    row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${new Date().toLocaleDateString()}</td>
+                    <td class="vehicle-number">${company.vehicleNumber}</td>
+                    <td>${weight1.toFixed(3)}</td>
+                    <td>${weight2.toFixed(3)}</td>
+                    <td class="${qoldiq >= 0 ? 'qoldiq-positive' : 'qoldiq-negative'}">${Math.abs(qoldiq).toFixed(3)}</td>
+                    <td>${holat}</td>
+                    <td>${company.companyName}</td>
+                    <td>${company.vehicleModel}</td>
+                    <td>${company.category}</td>
+                    <td>
+                        <button class="delete-btn" onclick="showDeleteConfirmation(${company.id})">O'chirish</button>
+                    </td>
+                `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            companySelect.addEventListener('change', function () {
+                renderTable(this.value);
+            });
+
+            function simulateWeightChange() {
+                const weight = Math.random() * 1000;
+                weightValueElem.textContent = weight.toFixed(2);
+                const percentage = (weight / 1000) * 100;
+                weightIndicatorElem.style.width = `${percentage}%`;
+            }
+
+            setInterval(simulateWeightChange, 2000);
+
+            searchButton.addEventListener('click', function () {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredData = companyData.filter(company =>
+                    company.companyName.toLowerCase().includes(searchTerm) ||
+                    company.vehicleNumber.toLowerCase().includes(searchTerm)
+                );
+                renderFilteredTable(filteredData);
+            });
+
+            function renderFilteredTable(filteredData) {
+                tableBody.innerHTML = '';
+                filteredData.forEach((company, index) => {
+                    const row = document.createElement('tr');
+                    row.className = company.category === 'Bizniki' ? 'our-company' : 'other-company';
+                    const weight1 = Math.random() * 100;
+                    const weight2 = Math.random() * 100;
+                    const qoldiq = weight1 - weight2;
+                    const holat = qoldiq >= 0 ? 'Kirim' : 'Chiqim';
+
+                    row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${new Date().toLocaleDateString()}</td>
+                    <td class="vehicle-number">${company.vehicleNumber}</td>
+                    <td>${weight1.toFixed(3)}</td>
+                    <td>${weight2.toFixed(3)}</td>
+                    <td class="${qoldiq >= 0 ? 'qoldiq-positive' : 'qoldiq-negative'}">${Math.abs(qoldiq).toFixed(3)}</td>
+                    <td>${holat}</td>
+                    <td>${company.companyName}</td>
+                    <td>${company.vehicleModel}</td>
+                    <td>${company.category}</td>
+                    <td>
+                        <button class="delete-btn" onclick="showDeleteConfirmation(${company.id})">O'chirish</button>
+                    </td>
+                `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            window.showDeleteConfirmation = function (id) {
+                deleteRowId = id;
+                document.getElementById('confirmModal').style.display = 'flex';
+            }
+
+            window.confirmDelete = function (confirmed) {
+                if (confirmed && deleteRowId) {
+                    companyData = companyData.filter(company => company.id !== deleteRowId);
+                    localStorage.setItem('companyData', JSON.stringify(companyData));
+                    renderTable(companySelect.value);
+                }
+                document.getElementById('confirmModal').style.display = 'none';
+                deleteRowId = null;
+            }
+
+            window.enlargeVideo = function (videoNumber) {
+                const enlargedVideo = document.getElementById('enlargedVideo');
+                const enlargedVideoText = document.getElementById('enlargedVideoText');
+                enlargedVideoText.textContent = `Enlarged Video ${videoNumber}`;
+                enlargedVideo.style.display = 'flex';
+            }
+
+            window.closeEnlargedVideo = function () {
+                document.getElementById('enlargedVideo').style.display = 'none';
+            }
+
+            window.enlargeImage = function (imgElement) {
+                const enlargedImage = document.getElementById('enlargedImage');
+                const enlargedImageContent = document.getElementById('enlargedImageContent');
+                enlargedImageContent.src = imgElement.style.backgroundImage.slice(4, -1).replace(/"/g, "");
+                enlargedImage.style.display = 'flex';
+            }
+
+            window.closeEnlargedImage = function () {
+                document.getElementById('enlargedImage').style.display = 'none';
+            }
+
+            backBtn.addEventListener('click', function () {
+                if (app.classList.contains('hidden')) {
+                    pricingPlans.classList.add('hidden');
+                    loginSection.classList.remove('hidden');
+                } else {
+                    app.classList.add('hidden');
+                    pricingPlans.classList.remove('hidden');
+                }
+            });
+
+            // Report functionality
+            const reportButtons = document.querySelectorAll('.report-buttons button');
+            const reportContent = document.getElementById('report-content');
+            const reportTitle = document.getElementById('report-title');
+            const reportTable = document.getElementById('reportTable');
+            // const downloadPdfBtn = document.getElementById('download-pdf-btn');
+
+            reportButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    reportButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    const reportType = this.id.split('-')[0];
+                    updateReportContent(reportType);
+                });
+            });
+
+            function updateReportContent(reportType) {
+                reportTitle.textContent = `${reportType.charAt(0).toUpperCase() + reportType.slice(1)} hisobot`;
+                // Here you would typically fetch and display the appropriate report data
+                // For this example, we'll just update the table with some dummy data
+                const dummyData = generateDummyData(reportType);
+                updateReportTable(dummyData);
+            }
+
+            function generateDummyData(reportType) {
+                // Generate some dummy data based on the report type
+                const data = [];
+                const numberOfEntries = reportType === 'yearly' ? 12 : reportType === 'monthly' ? 30 : 7;
+                for (let i = 0; i < numberOfEntries; i++) {
+                    data.push({
+                        date: new Date(2023, 0, i + 1).toLocaleDateString(),
+                        number: `A${100 + i}`,
+                        weight1: Math.random() * 100,
+                        weight2: Math.random() * 100,
+                        company: `Company ${i % 3 + 1}`,
+                        vehicleModel: `Model ${String.fromCharCode(65 + i % 26)}`,
+                        category: i % 2 === 0 ? 'Bizniki' : 'Boshqaniki'
+                    });
+                }
+                return data;
+            }
+
+            function updateReportTable(data) {
+                const tableBody = reportTable.querySelector('tbody');
+                tableBody.innerHTML = '';
+                data.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    const qoldiq = item.weight1 - item.weight2;
+                    const holat = qoldiq >= 0 ? 'Kirim' : 'Chiqim';
+                    row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.date}</td>
+                    <td>${item.number}</td>
+                    <td>${item.weight1.toFixed(3)}</td>
+                    <td>${item.weight2.toFixed(3)}</td>
+                    <td>${Math.abs(qoldiq).toFixed(3)}</td>
+                    <td>${holat}</td>
+                    <td>${item.company}</td>
+                    <td>${item.vehicleModel}</td>
+                    <td>${item.category}</td>
+                `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            // downloadPdfBtn.addEventListener('click', function () {
+            //     // Here you would implement the PDF download functionality
+            //     alert('PDF download functionality to be implemented');
+            // });
+
+            // Initialize with daily report
+            // updateReportContent('daily');
+        });
+    </script>
+</body>
+
+</html>
